@@ -17,15 +17,21 @@ function addRuleToDocument(rule) {
 }
 
 function addUsingFontFace(fontFamily, woffSrc) {
-  var fontFace = new FontFace(fontFamily, 'url(' + woffSrc + ')');
+  return new Promise((resolve, reject) => {
 
-  // document.fonts has a .has method on Chrome but seems naive
-  // so just add for now...
-  document.fonts.add(fontFace);
+    var fontFace = new FontFace(fontFamily, 'url(' + woffSrc + ')');
 
-  fontFace.load();
+    // document.fonts has a .has method on Chrome but seems naive
+    // so just add for now...
+    fontFace.load()
+    fontFace.loaded.then(()=>{
+      document.fonts.add(fontFace);
+      resolve();
+    }).catch(() => {
+      resolve();
+    });
+  });
 
-  return fontFace.loaded;
 }
 
 function addUsingObserver(fontFamily, woffSrc, options) {
