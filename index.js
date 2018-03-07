@@ -18,14 +18,14 @@ function addRuleToDocument(rule) {
 
 function addUsingFontFace(fontFamily, woffSrc) {
   return new Promise((resolve, reject) => {
-
+    console.log('addUsingFontFace ')
     var fontFace = new FontFace(fontFamily, 'url(' + woffSrc + ')');
 
     // document.fonts has a .has method on Chrome but seems naive
     // so just add for now...
     fontFace.load()
     fontFace.loaded.then(()=>{
-      document.fonts.add(fontFace);
+      // document.fonts.add(fontFace);
       resolve();
     }).catch(() => {
       resolve();
@@ -39,6 +39,7 @@ function addUsingObserver(fontFamily, woffSrc, options) {
 
   // clone options object to avoid mutations
   var fontFaceOptions = {};
+  console.log('addUsingObserver ')
 
   for (option in options) {
     if (options.hasOwnProperty(option)) {
@@ -69,9 +70,9 @@ module.exports = function addAndLoadFont(fontFamily, options) {
     throw new Error('No WOFF format font detected!');
   }
 
-  if (window.FontFace) {
+  // if (window.FontFace) {
     return addUsingFontFace(fontFamily, woffSrc);
-  } else {
-    return addUsingObserver(fontFamily, woffSrc, options);
-  }
+  // } else {
+  //   return addUsingObserver(fontFamily, woffSrc, options);
+  // }
 };
